@@ -21,7 +21,12 @@ exports.handler = async (event) => {
     });
     const geocoderResponse = await fetch(
       `https://geocoding.geo.census.gov/geocoder/geographies/onelineaddress?${geocoderQuery}`,
-      { headers: { Accept: "application/json" } },
+      {
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "Mozilla/5.0 (compatible; LocationLens/1.0)",
+        },
+      },
     );
     if (!geocoderResponse.ok) throw new Error("The Census geocoder is temporarily unavailable.");
 
