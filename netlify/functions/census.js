@@ -14,12 +14,14 @@ exports.handler = async (event) => {
   try {
     const geocoderQuery = new URLSearchParams({
       address,
-      benchmark: "Public_AR_Current",
-      vintage: "Current_Current",
+      benchmark: "4",
+      vintage: "4",
+      layers: "10",
       format: "json",
     });
     const geocoderResponse = await fetch(
       `https://geocoding.geo.census.gov/geocoder/geographies/onelineaddress?${geocoderQuery}`,
+      { headers: { Accept: "application/json" } },
     );
     if (!geocoderResponse.ok) throw new Error("The Census geocoder is temporarily unavailable.");
 
