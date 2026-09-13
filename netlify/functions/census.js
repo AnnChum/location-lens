@@ -16,7 +16,6 @@ exports.handler = async (event) => {
       address,
       benchmark: "4",
       vintage: "4",
-      layers: "10",
       format: "json",
     });
     const geocoderResponse = await fetch(
