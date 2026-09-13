@@ -1,0 +1,10 @@
+[build]
+  publish = "site"
+
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+  from = "/api/census"
+  to = "/.netlify/functions/census"
+  status = 200
