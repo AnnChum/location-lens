@@ -11,7 +11,9 @@ exports.handler = async (event) => {
     const match = geocoder.result?.addressMatches?.[0];
     const tract = match?.geographies?.["Census Tracts"]?.[0];
     if (!tract) return json(422, { error: "Address was not matched to a Census tract. Try a complete U.S. street address." });
-    const acsQuery = new URLSearchParams({ get: "NAME,B01003_001E,B19013_001E,B01002_001E", for: `tract:${tract.TRACT}`, in: `state:${tract.STATE} county:${tract.COUNTY}` });
+    const apiKey = process.env.CENSUS_API_KEY;
+    if (!apiKey) throw new Error("The Census API key is not configured yet.");
+    const acsQuery = new URLSearchParams({ get: "NAME,B01003_001E,B19013_001E,B01002_001E", for: `tract:${tract.TRACT}`, in: `state:${tract.STATE} county:${tract.COUNTY}`, key: apiKey });
     const acsResponse = await fetch(`https://api.census.gov/data/2024/acs/acs5?${acsQuery}`, { headers });
     if (!acsResponse.ok) throw new Error("The Census survey service is temporarily unavailable.");
     const rows = await acsResponse.json();
