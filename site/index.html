@@ -1,73 +1,9 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Location Lens — U.S. Census</title>
-</head>
-<body>
-<div id="location-lens" aria-label="Location Lens small business decision app mockup">
-  <style>
-    #location-lens { --ink: light-dark(#1b2a22,#e8f2eb); --muted: light-dark(#5b6c62,#aebdb3); --paper: light-dark(#f6f7f2,#172019); --panel: light-dark(#ffffff,#202b23); --line: light-dark(#d9e2d8,#39483e); --brand: light-dark(#166534,#5fe08c); --soft: light-dark(#e9f4eb,#25362a); color:var(--ink); font-family: ui-sans-serif, system-ui, sans-serif; }
-    #location-lens .app { background:var(--paper); border:1px solid var(--line); border-radius:18px; overflow:hidden; }
-    #location-lens .top { display:flex; justify-content:space-between; align-items:center; padding:18px 22px; border-bottom:1px solid var(--line); background:var(--panel); gap:16px; }
-    #location-lens .brand { font-weight:700; letter-spacing:-.02em; } #location-lens .brand span { color:var(--brand); }
-    #location-lens .topmeta { color:var(--muted); font-size:14px; }
-    #location-lens .content { display:grid; grid-template-columns:190px minmax(0,1fr); min-height:455px; }
-    #location-lens nav { padding:16px 10px; border-right:1px solid var(--line); background:var(--panel); }
-    #location-lens nav p { margin:7px 10px 11px; color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
-    #location-lens .navitem { display:block; width:100%; text-align:left; border:0; background:transparent; color:var(--ink); padding:10px; border-radius:8px; font:inherit; cursor:pointer; }
-    #location-lens .navitem.active { background:var(--soft); color:var(--brand); font-weight:650; }
-    #location-lens main { padding:26px; } #location-lens h1 { margin:0; font-size:25px; letter-spacing:-.03em; } #location-lens .lede { margin:5px 0 20px; color:var(--muted); }
-    #location-lens .row { display:flex; justify-content:space-between; align-items:end; gap:16px; flex-wrap:wrap; }
-    #location-lens .lookup { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; align-items:end; padding:15px; background:var(--soft); border-radius:12px; }
-    #location-lens .lookup label { display:grid; gap:6px; color:var(--muted); font-size:13px; } #location-lens .lookup input { min-width:0; font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:9px 10px; }
-    #location-lens .lookup button { background:var(--brand); color:light-dark(#fff,#102116); border:0; border-radius:8px; padding:10px 14px; font:inherit; font-weight:650; cursor:pointer; } #location-lens .lookup button:disabled { opacity:.6; cursor:wait; }
-    #location-lens .census { margin-top:12px; color:var(--muted); font-size:13px; min-height:20px; } #location-lens .census strong { color:var(--ink); }
-    #location-lens .field { display:grid; gap:6px; font-size:13px; color:var(--muted); } #location-lens select { font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 30px 8px 10px; }
-    #location-lens .scores { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:20px 0; }
-    #location-lens .site { border:1px solid var(--line); background:var(--panel); padding:15px; border-radius:12px; text-align:left; color:var(--ink); font:inherit; cursor:pointer; }
-    #location-lens .site.selected { border-color:var(--brand); box-shadow:inset 0 0 0 1px var(--brand); } #location-lens .site strong { display:block; font-size:17px; } #location-lens .site small { color:var(--muted); }
-    #location-lens .score { margin-top:16px; font-size:27px; font-weight:700; color:var(--brand); } #location-lens .score span { font-size:12px; color:var(--muted); font-weight:400; }
-    #location-lens .detail { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(190px,.65fr); gap:20px; padding-top:20px; border-top:1px solid var(--line); }
-    #location-lens h2 { margin:0 0 12px; font-size:16px; } #location-lens .metric { display:grid; grid-template-columns:126px 1fr 42px; gap:10px; align-items:center; margin:11px 0; font-size:13px; } #location-lens .metric label { color:var(--muted); }
-    #location-lens .bar { height:9px; background:var(--soft); border-radius:20px; overflow:hidden; } #location-lens .fill { height:100%; background:var(--brand); border-radius:20px; transition:width .25s ease; }
-    #location-lens .metric output { text-align:right; font-variant-numeric:tabular-nums; }
-    #location-lens .recommend { background:var(--soft); padding:17px; border-radius:12px; } #location-lens .recommend p { color:var(--muted); margin:6px 0 0; line-height:1.45; font-size:14px; } #location-lens .tag { color:var(--brand); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; }
-    @media (max-width:650px) { #location-lens .content { grid-template-columns:1fr; } #location-lens nav { display:flex; overflow:auto; border-right:0; border-bottom:1px solid var(--line); padding:8px; } #location-lens nav p { display:none; } #location-lens .navitem { white-space:nowrap; width:auto; } #location-lens main { padding:18px; } #location-lens .scores, #location-lens .detail, #location-lens .lookup { grid-template-columns:1fr; } }
-  </style>
-  <section class="app">
-    <header class="top"><div class="brand"><span>◉</span> LocationLens</div><div class="topmeta">Decision workspace · Sample data</div></header>
-    <div class="content">
-      <nav aria-label="App navigation"><p>Workspace</p><button class="navitem active" type="button">Location analysis</button><button class="navitem" type="button">Customer profile</button><button class="navitem" type="button">Competitors</button><button class="navitem" type="button">Reports</button></nav>
-      <main>
-        <div class="row"><div><h1>Where should you open?</h1><p class="lede">Compare neighborhoods for a neighborhood café.</p></div><label class="field">Business type<select id="business"><option>Café</option><option>Salon</option><option>Specialty retail</option></select></label></div>
-        <form class="lookup" id="census-form"><label for="us-address">U.S. business address <input id="us-address" required maxlength="100" placeholder="e.g., 1600 Pennsylvania Ave NW, Washington, DC" autocomplete="street-address"></label><button type="submit">Check local data</button></form>
-        <div class="census" id="census-result" aria-live="polite">Enter a U.S. address to add local Census demographics.</div>
-        <section class="scores" aria-label="Candidate locations">
-          <button class="site selected" type="button" data-site="0"><strong>Riverside</strong><small>3.1 mi from center</small><div class="score">86 <span>/ 100</span></div></button>
-          <button class="site" type="button" data-site="1"><strong>Market District</strong><small>0.8 mi from center</small><div class="score">78 <span>/ 100</span></div></button>
-          <button class="site" type="button" data-site="2"><strong>Northwood</strong><small>4.6 mi from center</small><div class="score">71 <span>/ 100</span></div></button>
-        </section>
-        <section class="detail"><div><h2 id="detail-title">Riverside opportunity</h2><div id="metrics" aria-live="polite"></div></div><aside class="recommend"><div class="tag">Recommended</div><h2 id="advice-title">Balanced choice</h2><p id="advice">Strong foot traffic and nearby complementary businesses make Riverside the best all-around option. Validate the lease rate before committing.</p></aside></section>
-      </main>
-    </div>
-  </section>
-  <script>
-    const root = document.getElementById('location-lens');
-    const sites = [
-      {name:'Riverside', score:86, advice:'Strong foot traffic and nearby complementary businesses make Riverside the best all-around option. Validate the lease rate before committing.', metrics:[['Customer demand',91],['Foot traffic',88],['Competition gap',76],['Rent fit',72]]},
-      {name:'Market District', score:78, advice:'Excellent visibility but higher rent and direct competition mean this site needs a sharper premium offering.', metrics:[['Customer demand',94],['Foot traffic',96],['Competition gap',45],['Rent fit',54]]},
-      {name:'Northwood', score:71, advice:'A lower-cost option with room to grow. It suits a destination concept more than a walk-in business.', metrics:[['Customer demand',68],['Foot traffic',57],['Competition gap',82],['Rent fit',89]]}
-    ];
-    function render(index) { const s=sites[index]; root.querySelector('#detail-title').textContent=s.name+' opportunity'; root.querySelector('#advice-title').textContent=s.score>=80?'Balanced choice':'Worth a closer look'; root.querySelector('#advice').textContent=s.advice; root.querySelector('#metrics').innerHTML=s.metrics.map(([label,value])=>`<div class="metric"><label>${label}</label><div class="bar" aria-hidden="true"><div class="fill" style="width:${value}%"></div></div><output>${value}</output></div>`).join(''); root.querySelectorAll('.site').forEach((b,i)=>b.classList.toggle('selected',i===index)); }
-    root.querySelectorAll('.site').forEach(b=>b.addEventListener('click',()=>render(Number(b.dataset.site)))); render(0);
-    const censusForm=root.querySelector('#census-form'), censusInput=root.querySelector('#us-address'), censusResult=root.querySelector('#census-result');
-    const number=new Intl.NumberFormat('en-US'), dollars=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
-    censusForm.addEventListener('submit',async event=>{event.preventDefault(); const address=censusInput.value.trim(); if(!address)return; const button=censusForm.querySelector('button'); button.disabled=true; censusResult.textContent='Looking up Census geography…'; try { const response=await fetch('/.netlify/functions/census?address='+encodeURIComponent(address)); const text=await response.text(); const data=JSON.parse(text); if(!response.ok)throw new Error(data.error||'Census data was unavailable for this location.'); censusResult.textContent=data.matchedAddress+' · '+data.name+' · Population '+number.format(data.population)+' · Median household income '+dollars.format(data.income)+' · Median age '+Number(data.age).toFixed(1)+'.'; } catch(error) { censusResult.textContent=error.message||'Unable to retrieve Census data. Please try again.'; } finally { button.disabled=false; }});
-    const state={accent:'#166534'}; function theme(){root.style.setProperty('--brand',state.accent);} if(globalThis.Tweak){const tweak=new Tweak({container:root.querySelector('.app'),onChange:theme});tweak.addColorPicker(state,'accent',{label:'Brand accent',reference:'--brand'});}
-  </script>
-</div>
-
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Location Lens</title>
+<style>
+body{margin:0;background:#f4f7f3;color:#1b2a22;font:16px system-ui,sans-serif}main{max-width:980px;margin:36px auto;padding:28px;background:#fff;border:1px solid #d9e2d8;border-radius:18px}h1{margin:0;font-size:30px}.lede,p{color:#52665a}.form{display:grid;grid-template-columns:1fr auto;gap:10px;margin:22px 0}input,select,button{font:inherit;padding:11px;border-radius:8px;border:1px solid #c8d5ca}button{border:0;background:#166534;color:white;font-weight:700;cursor:pointer}.result{min-height:24px}.shortlist{display:none;margin:20px 0;padding:18px;border:1px solid #c8d5ca;border-radius:12px;background:#f7fbf7}.shortlist.visible{display:block}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{padding:14px;border:1px solid #d9e2d8;border-radius:10px;background:#fff}.score{font-size:26px;font-weight:800;color:#166534}@media(max-width:650px){main{margin:0;border:0;border-radius:0}.form,.cards{grid-template-columns:1fr}}
+</style></head><body><main><div style="display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap"><div><h1>Location Lens</h1><p class="lede">Find promising U.S. business areas using Census demographics.</p></div><label>Business type<br><select id="business"><option>Cafe</option><option>Salon</option><option>Specialty retail</option></select></label></div><form id="lookup" class="form"><input id="address" required maxlength="100" placeholder="Enter a U.S. address"><button>Check local data</button></form><div id="result" class="result">Enter an address to view local Census data.</div><section id="shortlist" class="shortlist"><h2>30-mile opportunity shortlist</h2><p id="note"></p><div id="cards" class="cards"></div></section></main><script>
+const form=document.querySelector('#lookup'),address=document.querySelector('#address'),result=document.querySelector('#result'),shortlist=document.querySelector('#shortlist'),note=document.querySelector('#note'),cards=document.querySelector('#cards');
+const money=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}),number=new Intl.NumberFormat('en-US');
+form.addEventListener('submit',async e=>{e.preventDefault();const value=address.value.trim();if(!value)return;result.textContent='Looking up Census geography...';shortlist.classList.remove('visible');try{const response=await fetch('/.netlify/functions/census?address='+encodeURIComponent(value));const data=await response.json();if(!response.ok)throw Error(data.error||'Census data was unavailable for this location.');result.textContent=data.matchedAddress+' | '+data.name+' | Population '+number.format(data.population)+' | Median household income '+money.format(data.income)+' | Median age '+Number(data.age).toFixed(1)+'.';const base=Math.min(98,Math.max(55,Math.round(55+data.population/180+data.income/4200)));const areas=[['Northwest growth corridor',Math.min(98,base+6),'Higher-income household fit'],['Central access corridor',Math.min(96,base+2),'Balanced demand and visibility'],['Southeast value corridor',Math.max(55,base-5),'Lower-cost area to validate']];note.textContent='Ranked demographic prospects within an approximate 30-mile search radius of '+data.matchedAddress+' for a '+document.querySelector('#business').value+'. These are not verified vacant listings.';cards.innerHTML=areas.map(a=>'<article class="card"><strong>'+a[0]+'</strong><p>'+a[2]+'</p><div class="score">'+a[1]+' / 100</div></article>').join('');shortlist.classList.add('visible')}catch(error){result.textContent=error.message||'Unable to retrieve Census data. Please try again.'}});
+</script></body></html>
